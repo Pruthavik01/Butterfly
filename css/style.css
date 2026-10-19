@@ -1,0 +1,110 @@
+:root {
+  --wall-light: #e6e2d9;
+  --wall-dark: #c7c1b5;
+  --frame: #1f1c19;
+  --mat: #f7f5f0;
+  --ink: #161616;
+  --muted: #6b665c;
+  --art: min(70vh, calc(100vw - 32px - 2 * var(--pad) - 20px));
+  --pad: clamp(14px, 4.5vmin, 48px);
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 30%, var(--wall-light), var(--wall-dark));
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  color: var(--ink);
+}
+
+.wall {
+  height: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.artwork {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.4vh;
+}
+
+/* thin dark frame -> off-white mat -> the drawing */
+.frame {
+  padding: 10px;
+  background: var(--frame);
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.25), 0 28px 60px rgb(0 0 0 / 0.35);
+}
+
+.mat {
+  padding: var(--pad);
+  background: var(--mat);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.08), inset 2px 3px 8px rgb(0 0 0 / 0.18);
+}
+
+.art {
+  position: relative;
+  width: var(--art);
+  height: var(--art);
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.06);
+}
+
+#app,
+#app canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.signature {
+  position: absolute;
+  right: 22%;
+  bottom: 3.5%;
+  font-family: 'Caveat', cursive;
+  font-size: calc(var(--art) * 0.042);
+  color: var(--ink);
+  opacity: 0.85;
+  transform: rotate(-4deg);
+  pointer-events: none;
+}
+
+figcaption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.title {
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(18px, 2.6vh, 26px);
+}
+
+.meta {
+  font-size: clamp(11px, 1.5vh, 14px);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hint {
+  position: fixed;
+  left: 16px;
+  bottom: 12px;
+  margin: 0;
+  font: 12px/1.4 system-ui, sans-serif;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+kbd {
+  font: inherit;
+  padding: 0 4px;
+  border: 1px solid #b3ada2;
+  border-radius: 3px;
+}
