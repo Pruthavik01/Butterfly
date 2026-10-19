@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Cormorant+Garamond:ital,wght@0,400;1,500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
+  <!-- Only Chromium can refract the backdrop through an SVG filter; others fall back to light blur. -->
+  <script>if (navigator.userAgentData) document.documentElement.classList.add('svg-backdrop');</script>
   <script type="importmap">
     {
       "imports": {
@@ -18,15 +20,29 @@
   </script>
 </head>
 <body>
+  <!-- Liquid-glass lens for the View 3D button: a displacement map that is neutral in the
+       centre and pushes pixels at the rim (R = x, G = y), sized to the 120x40 button. -->
+  <svg class="svg-defs" width="0" height="0" aria-hidden="true">
+    <filter id="liquid-glass" x="0" y="0" width="120" height="40" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feImage x="0" y="0" width="120" height="40" preserveAspectRatio="none" result="rawMap"
+        href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='40'><defs><linearGradient id='r' x1='0' x2='1'><stop offset='0' stop-color='%23000'/><stop offset='1' stop-color='%23f00'/></linearGradient><linearGradient id='g' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%23000'/><stop offset='1' stop-color='%230f0'/></linearGradient></defs><rect width='120' height='40' fill='url(%23r)'/><rect width='120' height='40' fill='url(%23g)' style='mix-blend-mode:screen'/><rect x='6' y='6' width='108' height='28' rx='14' fill='%23808000'/></svg>" />
+      <!-- soften the map here (a blur inside the data-URI image is ignored by Chrome) -->
+      <feGaussianBlur in="rawMap" stdDeviation="2" result="map" />
+      <feGaussianBlur in="SourceGraphic" stdDeviation="0.4" result="soft" />
+      <feDisplacementMap in="soft" in2="map" scale="-20" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </svg>
+
   <main class="wall">
     <figure class="artwork">
       <div class="frame">
         <div class="mat">
           <div class="art">
             <div id="app"></div>
-            <span class="signature">Suyash</span>
+            <span class="signature">Pruthavik</span>
           </div>
         </div>
+        <a class="view-3d" href="3d/tryThreeD.html">View 3D</a>
       </div>
       <figcaption>
         <span class="title">Metamorphosis</span>

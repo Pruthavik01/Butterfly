@@ -35,6 +35,7 @@ body {
 
 /* thin dark frame -> off-white mat -> the drawing */
 .frame {
+  position: relative;
   padding: 10px;
   background: var(--frame);
   box-shadow: 0 2px 4px rgb(0 0 0 / 0.25), 0 28px 60px rgb(0 0 0 / 0.35);
@@ -70,6 +71,76 @@ body {
   opacity: 0.85;
   transform: rotate(-4deg);
   pointer-events: none;
+}
+
+/* Liquid-glass pill hanging off the frame's bottom-right edge: nearly
+   clear, the backdrop bends at the rim (SVG lens, Chromium) and the edges
+   catch specular light. Other browsers get a light blur instead of refraction. */
+.svg-defs {
+  position: absolute;
+}
+
+.view-3d {
+  position: absolute;
+  right: 18px;
+  bottom: -30px; /* only the top rim overlaps the frame, so its edge bends through the glass */
+  display: grid;
+  place-items: center;
+  width: 120px;  /* fixed: the SVG lens map is drawn for 120x40 */
+  height: 40px;
+  box-sizing: border-box;
+  border-radius: 999px;
+  isolation: isolate;
+  overflow: hidden;
+  font: 500 14px/1 -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  text-shadow: 0 1px 2px rgb(255 255 255 / 0.7);
+  text-decoration: none;
+  background: rgb(255 255 255 / 0.01); /* ~90%+ see-through: the rims and sheen carry the glass look */
+  -webkit-backdrop-filter: blur(1px) saturate(120%);
+  backdrop-filter: blur(1px) saturate(120%);
+  box-shadow:
+    inset 1.5px 1.5px 0 -0.5px rgb(255 255 255 / 0.8),  /* top-left specular rim */
+    inset -1px -1px 0 -0.5px rgb(255 255 255 / 0.4),    /* bottom-right rim */
+    inset 0 0 6px rgb(255 255 255 / 0.08),              /* faint inner edge glow */
+    0 4px 12px rgb(0 0 0 / 0.08);
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1.2), box-shadow 0.25s ease;
+}
+
+.svg-backdrop .view-3d {
+  backdrop-filter: url(#liquid-glass) saturate(120%);
+}
+
+/* glossy sheen across the top-left of the glass */
+.view-3d::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background:
+    radial-gradient(120% 90% at 22% 0%, rgb(255 255 255 / 0.12), transparent 40%),
+    radial-gradient(80% 60% at 85% 110%, rgb(255 255 255 / 0.05), transparent 60%);
+  pointer-events: none;
+}
+
+.view-3d:hover {
+  transform: translateY(-1px) scale(1.04);
+  box-shadow:
+    inset 1.5px 1.5px 0 -0.5px rgb(255 255 255 / 0.95),
+    inset -1px -1px 0 -0.5px rgb(255 255 255 / 0.55),
+    inset 0 0 8px rgb(255 255 255 / 0.14),
+    0 8px 18px rgb(0 0 0 / 0.12);
+}
+
+.view-3d:active {
+  transform: scale(0.96);
+}
+
+.view-3d:focus-visible {
+  outline: 2px solid rgb(255 255 255 / 0.9);
+  outline-offset: 3px;
 }
 
 figcaption {
